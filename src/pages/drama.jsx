@@ -1,7 +1,7 @@
-function Home() {
+function Drama() {
     return (
         <div>This is drama page</div>
     )
 }
 
-export default Home
+export default Drama
