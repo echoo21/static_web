@@ -1,6 +1,6 @@
 import useMovies from "../hooks/useMovies"
 import { PopularMovies, TopRatedMovies, UpcomingMovies } from "../axios/movies"
-import MovieCard from "../components/MovieCard"
+import MovieCard from "../components/moviecard"
 import { Link } from "react-router-dom"
 
 function Home() {
