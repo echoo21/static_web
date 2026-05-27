@@ -31,8 +31,8 @@ export default function Search() {
         </div>
           <ComboboxInput
             className={clsx(
-              'w-full rounded-full border-none bg-white/10 py-1.5 pr-8 pl-9 text-sm/6 text-white',
-              'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 transition-all'
+              'w-full rounded-full border border-white/20 backdrop-blur-lg bg-white/10 py-1.5 pr-8 pl-9 text-sm/6 text-white',
+              'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25 hover:border-white/30 hover:bg-white/15 transition-all duration-300'
             )}
             displayValue={(movie) => movie?.name}
             onChange={(event) => setQuery(event.target.value)}
@@ -47,7 +47,7 @@ export default function Search() {
           anchor="bottom start" // Mengunci posisi dropdown tepat di bawah input
           transition
           className={clsx(
-            'w-[var(--input-width)] rounded-xl border border-white/5 bg-gray-600/20 p-1 [--anchor-gap:4px] empty:invisible',
+            'w-[var(--input-width)] rounded-xl border border-white/20 backdrop-blur-lg bg-white/10 p-1 [--anchor-gap:4px] empty:invisible hover:bg-white/15',
             'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 z-50'
           )}
         >

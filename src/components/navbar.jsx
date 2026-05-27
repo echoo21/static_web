@@ -1,8 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { NavLink, Link } from 'react-router-dom' // Import NavLink
-import logo from '../assets/logo.png'
 import Search from './searchbar'
+import logo from "../assets/logo.png"
 
 const navigation = [
   { name: 'Movie', href: '/movie' },
@@ -16,13 +16,13 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="relative bg-gray-600/20 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
+    <Disclosure as="nav" className="relative backdrop-blur-[20px] bg-white/[0.08] bg-opacity-[0.03] border border-white/[0.18] shadow-[0_0px_20px_0_rgba(0,0,0,0.15)] hover:bg-white/[0.12] hover:border-white/[0.25] transition-all duration-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           
           {/* Mobile Menu Button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/10 hover:text-white transition-all duration-300 backdrop-blur-lg border border-white/20 bg-white/5">
               <Bars3Icon aria-hidden="true" className="block size-6 group-data-open:hidden" />
               <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
             </DisclosureButton>
@@ -34,7 +34,7 @@ export default function Navbar() {
                 <img
                   alt="logo picture"
                   src={logo}
-                  className="h-8 w-auto cursor-pointer" // Added cursor-pointer for better UX
+                  className="h-8 w-auto cursor-pointer hover:scale-105 transition-transform duration-300" // Added cursor-pointer for better UX
                 />
               </Link>
             </div>
@@ -47,8 +47,8 @@ export default function Navbar() {
                     key={item.name}
                     to={item.href}
                     className={({ isActive }) => classNames(
-                      isActive ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium'
+                      isActive ? 'bg-white/20 backdrop-blur-lg border border-white/30 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white',
+                      'rounded-md px-3 py-2 text-sm font-medium transition-all duration-300'
                     )}
                   >
                     {item.name}
@@ -73,8 +73,8 @@ export default function Navbar() {
               as={NavLink} // This tells Headless UI to render NavLink instead of 'a'
               to={item.href}
               className={({ isActive }) => classNames(
-                isActive ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium'
+                isActive ? 'bg-white/20 backdrop-blur-lg border border-white/30 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white',
+                'block rounded-md px-3 py-2 text-base font-medium transition-all duration-300'
               )}
             >
               {item.name}
