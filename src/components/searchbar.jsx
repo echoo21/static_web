@@ -23,7 +23,7 @@ export default function Search() {
         })
 
   return (
-    <div className="w-64"> 
+    <div className="w-full sm:w-64">
       <Combobox value={selected} onChange={(value) => setSelected(value)} onClose={() => setQuery('')}>
         <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

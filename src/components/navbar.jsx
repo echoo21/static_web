@@ -54,7 +54,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Right side — search + mobile button */}
-                <div className="flex items-center gap-3 ml-auto">
+                <div className="flex items-center gap-3 ml-auto w-full sm:w-auto">
                   <Search />
 
                   {/* Mobile menu button */}
