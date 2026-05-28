@@ -1,7 +1,7 @@
-function Animepage() {
+function Anime() {
     return (
         <div>Hello World</div>
     )
 }
 
-export default Animepage
+export default Anime

@@ -1,9 +1,10 @@
 import './App.css'
 import Navbar from './components/navbar'
-import Homepage from './pages/home'
-import Animepage from './pages/animepage'
-import Moviepage from './pages/movie'
-import Dramapage from './pages/drama'
+import Home from './pages/home'
+import Anime from './pages/anime'
+import Movie from './pages/movie'
+import Drama from './pages/drama'
+import WatchMovie from './pages/watchmovie'
 import { HashRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -14,10 +15,11 @@ function App() {
       
       <Routes>
         {/* 'path' stays simple, basename handles the prefix */}
-        <Route path="/" element={<Homepage />} />
-        <Route path='/movie' element={<Moviepage />} />
-        <Route path="/drama" element={<Dramapage />} />
-        <Route path="/anime" element={<Animepage />} />
+        <Route path="/" element={<Home />} />
+        <Route path='/movie' element={<Movie />} />
+        <Route path="/drama" element={<Drama />} />
+        <Route path="/anime" element={<Anime />} />
+        <Route path='/wtchmovie/:id' element={<WatchMovie />} />
       </Routes>
     </HashRouter>
   )
