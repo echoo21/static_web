@@ -1,6 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import Search from './searchbar'
 import logo from "../assets/logo.png"
 
@@ -15,6 +15,8 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const location = useLocation()
+  const searchType = location.pathname.startsWith('/drama') ? 'tv' : 'movie'
   return (
     <Disclosure as="nav" className="sticky top-0 z-50 w-full">
       {({ open }) => (
@@ -55,7 +57,7 @@ export default function Navbar() {
 
                 {/* Right side — search + mobile button */}
                 <div className="flex items-center gap-3 ml-auto w-full sm:w-auto">
-                  <Search />
+                  <Search type={searchType} />
 
                   {/* Mobile menu button */}
                   <div className="sm:hidden">
