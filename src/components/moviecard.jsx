@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function MovieCard({ movie }) {
   return (
-    <Link to={`/wtchmovie/${movie.id}`}>
+    <Link to={`/streamingmovie/${movie.id}`}>
       <div className="group relative bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer">
 
         {/* Poster */}
