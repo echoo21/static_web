@@ -8,7 +8,7 @@ const SOURCES = [
     { label: "Server 3", url: (id) => `https://www.vidking.net/embed/movie/${id}` }
 ]
 
-function WatchMovie() {
+function StreamingMovie() {
     const { id } = useParams()
     const watchmovie = useMovieDetail(id);
     const [activeSource, setActiveSource] = useState(0)
@@ -131,4 +131,4 @@ function WatchMovie() {
     )
 }
 
-export default WatchMovie
+export default StreamingMovie

@@ -4,7 +4,8 @@ import Home from './pages/home'
 import Anime from './pages/anime'
 import Movie from './pages/movie'
 import Drama from './pages/drama'
-import WatchMovie from './pages/watchmovie'
+import StreamingMovie from './pages/streamingmovie'
+import StreamingDrama from './pages/streamingdrama'
 import { HashRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -19,7 +20,8 @@ function App() {
         <Route path='/movie' element={<Movie />} />
         <Route path="/drama" element={<Drama />} />
         <Route path="/anime" element={<Anime />} />
-        <Route path='/wtchmovie/:id' element={<WatchMovie />} />
+        <Route path='/streamingmovie/:id' element={<StreamingMovie />} />
+        <Route path='/watchtv/:id' element={<StreamingDrama />} />
       </Routes>
     </HashRouter>
   )
