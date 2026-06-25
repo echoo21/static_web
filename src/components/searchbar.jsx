@@ -1,43 +1,54 @@
 import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react'
 import { CheckIcon, ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import tmdb, { imgUrl } from '../lib/tmdb'
 
-export default function Search({ type = 'movie' }) {
+export default function Search({ type = 'movie', isAnime = false }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [selected, setSelected] = useState(null)
   const navigate = useNavigate()
+  const cache = useRef({})
 
   const isTV = type === 'tv'
 
+  // Debounced search with in-memory cache
   useEffect(() => {
-    if (query.trim() === '') return
+    if (query.trim() === '') {
+      setResults([])
+      return
+    }
+
+    // Check memory cache first
+    const cached = cache.current[query]
+    if (cached) {
+      setResults(cached)
+      return
+    }
 
     const timeout = setTimeout(async () => {
       try {
         const endpoint = isTV ? 'search/tv' : 'search/movie'
-        const res = await axios.get(`https://api.themoviedb.org/3/${endpoint}`, {
-          headers: { Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}` },
-          params: { query }
-        })
-        setResults(res.data.results.slice(0, 6))
+        const res = await tmdb.get(`/${endpoint}`, { params: { query } })
+        const items = res.data.results.slice(0, 6)
+        cache.current[query] = items
+        setResults(items)
       } catch (err) {
         console.error(err)
       }
     }, 400)
 
     return () => clearTimeout(timeout)
-  }, [query])
+  }, [query, isTV])
 
-  const handleSelect = (item) => {
+  const handleSelect = useCallback((item) => {
     if (!item) return
-    setSelected(item)
-    // TV shows use "name", movies use "title"
+    setSelected(null)
+    setQuery('')
     navigate(isTV ? `/watchtv/${item.id}` : `/streamingmovie/${item.id}`)
-  }
+  }, [isTV, navigate])
 
   const getLabel = (item) => item?.title ?? item?.name ?? ''
 
@@ -55,7 +66,7 @@ export default function Search({ type = 'movie' }) {
             )}
             displayValue={getLabel}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={isTV ? 'Search dramas...' : 'Search movies...'}
+            placeholder={isAnime ? 'Search anime...' : isTV ? 'Search dramas...' : 'Search movies...'}
           />
           <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
             <ChevronDownIcon className="size-4 fill-white/60 group-data-[hover]:fill-white" />
@@ -81,9 +92,14 @@ export default function Search({ type = 'movie' }) {
             >
               <img
                 src={item.poster_path
-                  ? `https://image.tmdb.org/t/p/w92${item.poster_path}`
+                  ? imgUrl(item.poster_path, 'w92')
                   : 'https://placehold.co/40x60?text=N/A'
                 }
+                alt={getLabel(item)}
+                width="40"
+                height="60"
+                loading="lazy"
+                decoding="async"
                 className="w-8 h-12 object-cover rounded opacity-90"
               />
               <div className="flex-1 min-w-0">

@@ -1,11 +1,13 @@
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #09090b;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,3 +15,29 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide scrollbar utility — used in horizontal scroll sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Performance enhancements ---- */
+
+/* Respect OS-level reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize image placeholder behavior */
+img {
+  color: transparent;  /* hide alt text flash while loading */
+}
+img[loading="lazy"] {
+  background: #18181b;  /* zinc-900 placeholder background */
+}

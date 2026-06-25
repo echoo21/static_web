@@ -1,12 +1,18 @@
-import useMovies from "../hooks/useMovies"
+import { useMemo } from "react"
+import useFetch from "../hooks/useFetch"
 import { PopularMovies, TopRatedMovies, UpcomingMovies } from "../axios/movies"
 import MovieCard from "../components/moviecard"
 import { Link } from "react-router-dom"
 
 function Home() {
-  const popularMovies = useMovies(PopularMovies)
-  const topRatedMovies = useMovies(TopRatedMovies)
-  const upcomingMovies = useMovies(UpcomingMovies)
+  const popularMovies = useFetch(PopularMovies)
+  const topRatedMovies = useFetch(TopRatedMovies)
+  const upcomingMovies = useFetch(UpcomingMovies)
+
+  // Limit items per section so we don't render hundreds of cards
+  const limitedPopular = useMemo(() => popularMovies.slice(0, 20), [popularMovies])
+  const limitedTop = useMemo(() => topRatedMovies.slice(0, 20), [topRatedMovies])
+  const limitedUpcoming = useMemo(() => upcomingMovies.slice(0, 20), [upcomingMovies])
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -14,7 +20,7 @@ function Home() {
       {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center text-center px-6 py-32 overflow-hidden">
 
-        {/* Grid background */}
+        {/* Grid background — CSS only, no cost */}
         <div
           className="absolute inset-0 opacity-100"
           style={{
@@ -26,26 +32,22 @@ function Home() {
           }}
         />
 
-        {/* Badge */}
         <div className="relative z-10 inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />
           <span className="text-xs text-zinc-400 tracking-widest uppercase">React streaming project</span>
         </div>
 
-        {/* Heading */}
         <h1 className="relative z-10 text-5xl sm:text-6xl font-bold text-white leading-tight tracking-tight max-w-2xl mb-6">
           Your next favorite{" "}
           <span className="text-teal-400">stream</span>{" "}
           starts here
         </h1>
 
-        {/* Subtext */}
         <p className="relative z-10 text-zinc-400 text-lg max-w-md leading-relaxed mb-10">
           A modern web streaming platform built with React. Browse movies,
           top-rated films, and upcoming releases — all in one place.
         </p>
 
-        {/* CTA Buttons */}
         <div className="relative z-10 flex items-center gap-3 flex-wrap justify-center">
           <Link
             to="/movie"
@@ -61,7 +63,6 @@ function Home() {
           </Link>
         </div>
 
-        {/* Feature pills */}
         <div className="relative z-10 flex items-center gap-8 mt-16 text-zinc-600 text-sm">
           <span className="flex items-center gap-2">
             <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>
@@ -72,40 +73,39 @@ function Home() {
             Top rated
           </span>
           <span className="flex items-center gap-2">
-            <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <svg className="w-4 h-4 text-zinc-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             Upcoming
           </span>
         </div>
       </section>
 
-      {/* Divider */}
       <div className="w-full h-px bg-white/5" />
 
-      {/* Movie sections */}
+      {/* Movie sections with content-visibility: auto for offscreen deferred rendering */}
       <div className="mx-auto max-w-7xl px-6 py-16 space-y-16">
 
-        <section>
+        <section style={{ contentVisibility: "auto", containIntrinsicSize: "400px" }}>
           <h2 className="text-white text-xl font-semibold mb-6">Popular movies</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {popularMovies.map((movie) => (
+            {limitedPopular.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
         </section>
 
-        <section>
+        <section style={{ contentVisibility: "auto", containIntrinsicSize: "400px" }}>
           <h2 className="text-white text-xl font-semibold mb-6">Top rated</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {topRatedMovies.map((movie) => (
+            {limitedTop.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
         </section>
 
-        <section>
+        <section style={{ contentVisibility: "auto", containIntrinsicSize: "400px" }}>
           <h2 className="text-white text-xl font-semibold mb-6">Upcoming</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {upcomingMovies.map((movie) => (
+            {limitedUpcoming.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>

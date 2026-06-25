@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { memo } from "react"
+import { Link } from "react-router-dom"
+import { imgUrl } from "../lib/tmdb"
 
 // Maps origin_country code to a readable label
 const COUNTRY_LABEL = {
@@ -16,18 +18,18 @@ function DramaCard({ drama }) {
 
   return (
     <Link to={`/watchtv/${drama.id}`}>
-      <div className="group relative bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer">
+      <div className="group/card relative bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer">
 
         {/* Poster */}
         <div className="relative overflow-hidden">
           <img
-            src={
-              drama.poster_path
-                ? `https://image.tmdb.org/t/p/w500${drama.poster_path}`
-                : "https://placehold.co/500x750?text=No+Image"
-            }
+            src={imgUrl(drama.poster_path, 'w342')}
             alt={drama.name}
-            className="w-full h-72 object-cover group-hover:brightness-50 transition-all duration-300"
+            width="342"
+            height="513"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-72 object-cover group-hover/card:brightness-50 transition-all duration-300"
           />
 
           {/* Rating badge */}
@@ -43,7 +45,7 @@ function DramaCard({ drama }) {
           )}
 
           {/* Hover overlay — show overview */}
-          <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover/card:opacity-100 transition-all duration-300">
             <p className="text-white text-sm leading-relaxed line-clamp-4">
               {drama.overview}
             </p>
@@ -61,4 +63,4 @@ function DramaCard({ drama }) {
   );
 }
 
-export default DramaCard;
+export default memo(DramaCard)

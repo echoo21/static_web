@@ -1,20 +1,22 @@
-import { Link } from "react-router-dom";
+import { memo } from "react"
+import { Link } from "react-router-dom"
+import { imgUrl } from "../lib/tmdb"
 
 function MovieCard({ movie }) {
   return (
     <Link to={`/streamingmovie/${movie.id}`}>
-      <div className="group relative bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer">
+      <div className="group/card relative bg-zinc-900 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer">
 
         {/* Poster */}
         <div className="relative overflow-hidden">
           <img
-            src={
-              movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                : "https://placehold.co/500x750?text=No+Image"
-            }
+            src={imgUrl(movie.poster_path, 'w342')}
             alt={movie.title}
-            className="w-full h-72 object-cover group-hover:brightness-50 transition-all duration-300"
+            width="342"
+            height="513"
+            loading="lazy"
+            decoding="async"
+            className="w-full h-72 object-cover group-hover/card:brightness-50 transition-all duration-300"
           />
 
           {/* Rating badge */}
@@ -23,7 +25,7 @@ function MovieCard({ movie }) {
           </div>
 
           {/* Hover overlay */}
-          <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover/card:opacity-100 transition-all duration-300">
             <p className="text-white text-sm leading-relaxed line-clamp-4">
               {movie.overview}
             </p>
@@ -41,4 +43,4 @@ function MovieCard({ movie }) {
   )
 }
 
-export default MovieCard;
+export default memo(MovieCard)

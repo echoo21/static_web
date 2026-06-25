@@ -16,7 +16,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const location = useLocation()
-  const searchType = location.pathname.startsWith('/drama') ? 'tv' : 'movie'
+  const isTvPath = location.pathname.startsWith('/drama') || location.pathname.startsWith('/anime')
+  const searchType = isTvPath ? 'tv' : 'movie'
   return (
     <Disclosure as="nav" className="sticky top-0 z-50 w-full">
       {({ open }) => (
@@ -57,7 +58,7 @@ export default function Navbar() {
 
                 {/* Right side — search + mobile button */}
                 <div className="flex items-center gap-3 ml-auto w-full sm:w-auto">
-                  <Search type={searchType} />
+                  <Search type={searchType} isAnime={location.pathname.startsWith('/anime')} />
 
                   {/* Mobile menu button */}
                   <div className="sm:hidden">
