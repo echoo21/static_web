@@ -6,14 +6,10 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/static_web',
-  esbuild: {
-    drop: ['console', 'debugger'],
-  },
   build: {
     minify: 'esbuild',
     cssMinify: true,
     cssCodeSplit: true,
-    target: 'es2020',
     assetsInlineLimit: 0,
     rollupOptions: {
       output: {
