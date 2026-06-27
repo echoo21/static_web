@@ -9,22 +9,30 @@ export default function Search({ type = 'movie', isAnime = false }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
   const [selected, setSelected] = useState(null)
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const cache = useRef({})
 
   const isTV = type === 'tv'
 
-  // Debounced search with in-memory cache
+  // Debounced live search with in-memory cache
   useEffect(() => {
     if (query.trim() === '') {
       setResults([])
+      setLoading(false)
+      setOpen(false)
       return
     }
+
+    setLoading(true)
+    setOpen(true)
 
     // Check memory cache first
     const cached = cache.current[query]
     if (cached) {
       setResults(cached)
+      setLoading(false)
       return
     }
 
@@ -37,16 +45,23 @@ export default function Search({ type = 'movie', isAnime = false }) {
         setResults(items)
       } catch (err) {
         console.error(err)
+        setResults([])
+      } finally {
+        setLoading(false)
       }
-    }, 400)
+    }, 300)
 
-    return () => clearTimeout(timeout)
+    return () => {
+      clearTimeout(timeout)
+      setLoading(false)
+    }
   }, [query, isTV])
 
   const handleSelect = useCallback((item) => {
     if (!item) return
     setSelected(null)
     setQuery('')
+    setOpen(false)
     navigate(isTV ? `/watchtv/${item.id}` : `/streamingmovie/${item.id}`)
   }, [isTV, navigate])
 
@@ -54,10 +69,17 @@ export default function Search({ type = 'movie', isAnime = false }) {
 
   return (
     <div className="w-full sm:w-64">
-      <Combobox value={selected} onChange={handleSelect}>
+      <Combobox value={selected} onChange={handleSelect} open={open} onClose={() => setOpen(false)}>
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <MagnifyingGlassIcon className="size-4 text-gray-400" />
+            {loading ? (
+              <svg className="size-4 animate-spin text-gray-400" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            ) : (
+              <MagnifyingGlassIcon className="size-4 text-gray-400" />
+            )}
           </div>
           <ComboboxInput
             className={clsx(
@@ -77,11 +99,11 @@ export default function Search({ type = 'movie', isAnime = false }) {
           anchor="bottom start"
           transition
           className={clsx(
-            'w-[var(--input-width)] rounded-xl border border-white/20 backdrop-blur-xl bg-white/10 p-1 [--anchor-gap:4px] empty:invisible',
+            'w-[var(--input-width)] rounded-xl border border-white/20 backdrop-blur-xl bg-black/80 p-1 [--anchor-gap:4px] empty:invisible',
             'transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0 z-50'
           )}
         >
-          {results.length === 0 && query !== '' && (
+          {query !== '' && !loading && results.length === 0 && (
             <div className="px-3 py-2 text-sm text-zinc-500">No results for "{query}"</div>
           )}
           {results.map((item) => (
